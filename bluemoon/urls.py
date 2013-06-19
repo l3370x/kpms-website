@@ -6,7 +6,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
-    # url(r'^$', 'bluemoon.views.home', name='home'),
+    url(r'^$', nclude(admin.site.urls), name='home'),
     # url(r'^bluemoon/', include('bluemoon.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
