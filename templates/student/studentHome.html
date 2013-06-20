@@ -1,7 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
+<br>
+This is the student page!
 
-welcome {{ theStudent.first_name }}!
+{% endblock %}
 
+{% block username %}
+Welcome {{ theStudent.first_name }}
 {% endblock %}

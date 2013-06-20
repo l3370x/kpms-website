@@ -11,14 +11,24 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
 from student.models import *
+from teacher.models import *
+
+ADMIN_NAME = 'l3370x'
+TEACHER_USERNAME = 'Rick'
 
 def startPage(request):
 	if request.user.is_authenticated():
-		if request.user.username == 'l3370x':
+		if request.user.username == ADMIN_NAME:
 			logout(request)
 			return login(request)
+		if request.user.username == TEACHER_USERNAME:
+			return teacherHome(request)
 		return studentHome(request)
 	return login(request)
+
+def teacherHome(request,teacherUser):
+	theTeacher = Teacher.objects.get(user=teacherUser.id)
+	return render(request,'teacher/teacherHome.html',{'theTeacher':theTeacher})
 
 def logout(request):
 	django.contrib.auth.logout(request)
@@ -43,9 +53,11 @@ def login(request):
                                       {'form':form,
                                        'error': 'Invalid username or password'},
                                       context_instance=RequestContext(request))
+        if user.username == TEACHER_USERNAME:
+			return teacherHome(request,user)
         django.contrib.auth.login(request,user)
         return studentHome(request)
 
 def studentHome(request):
 	theStudent = Student.objects.get(user=request.user.id)
-	return render_to_response('student/studentHome.html', {'theStudent':theStudent}, context_instance = RequestContext(request))
+	return render(request,'student/studentHome.html', {'theStudent':theStudent})
